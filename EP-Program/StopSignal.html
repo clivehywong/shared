@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hand Slap Reaction Game</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+</head>
+<body>
+    <div id="root"></div>
+    
+    <script type="text/babel">
+        const { useState, useEffect, useCallback } = React;
+
+        const HandSlapGame = () => {
+          const [gameState, setGameState] = useState('waiting'); // 'waiting', 'moving', 'success', 'miss', 'gameOver'
+          const [round, setRound] = useState(0);
+          const [score, setScore] = useState(50); // Start at 50% (half-full bar)
+          const [movingHand, setMovingHand] = useState(null); // 'left' or 'right'
+          const [moveStartTime, setMoveStartTime] = useState(null);
+          const [feedbackCondition, setFeedbackCondition] = useState('both'); // 'none', 'positive', 'negative', 'both'
+          const [playerHandMoving, setPlayerHandMoving] = useState(null); // 'left' or 'right'
+          const [isFullMove, setIsFullMove] = useState(true); // true = cross middle line, false = slight move
+          const [roundResult, setRoundResult] = useState(null); // 'correct', 'incorrect'
+          const [opponentHandPosition, setOpponentHandPosition] = useState({ left: 0, right: 0 }); // Movement distance
+          const [showSlapPrompt, setShowSlapPrompt] = useState(false);
+
+          const startNewRound = useCallback(() => {
+            if (round >= 40) {
+              setGameState('gameOver');
+              return;
+            }
+
+            setMovingHand(null);
+            setPlayerHandMoving(null);
+            setRoundResult(null);
+            setOpponentHandPosition({ left: 0, right: 0 });
+            setShowSlapPrompt(false);
+            
+            // Random delay before opponent moves (1-3 seconds)
+            const delay = Math.random() * 2000 + 1000;
+            
+            setTimeout(() => {
+              const hand = Math.random() < 0.5 ? 'left' : 'right';
+              const shouldFullMove = Math.random() < 0.5; // 50% chance for full move
+              
+              setMovingHand(hand);
+              setIsFullMove(shouldFullMove);
+              setGameState('moving');
+              setMoveStartTime(Date.now());
+              
+              // Animate opponent hand movement
+              if (shouldFullMove) {
+                // Full move: cross the middle line and go much further down
+                const moveDistance = 120; // Goes much further down past middle line
+                setOpponentHandPosition(prev => ({
+                  ...prev,
+                  [hand]: moveDistance
+                }));
+                
+                // Show slap prompt after 500ms delay
+                setTimeout(() => {
+                  setShowSlapPrompt(true);
+                }, 500);
+              } else {
+                // Lure move: cross middle line then pull back quickly
+                const crossDistance = 70; // Crosses middle line
+                setOpponentHandPosition(prev => ({
+                  ...prev,
+                  [hand]: crossDistance
+                }));
+                
+                // Pull back after 300ms
+                setTimeout(() => {
+                  setOpponentHandPosition(prev => ({
+                    ...prev,
+                    [hand]: 0
+                  }));
+                }, 300);
+              }
+              
+              // Auto-end round if player doesn't react in time (2 seconds)
+              setTimeout(() => {
+                setGameState(prevState => {
+                  if (prevState === 'moving') {
+                    // If it was a full move and player didn't respond, that's incorrect
+                    // If it was a slight move and player didn't respond, that's correct
+                    const wasCorrect = !shouldFullMove;
+                    setRoundResult(wasCorrect ? 'correct' : 'incorrect');
+                    updateScore(wasCorrect);
+                    setRound(prev => prev + 1);
+                    return 'success';
+                  }
+                  return prevState;
+                });
+              }, 2000);
+            }, delay);
+          }, [round]);
+
+          const updateScore = useCallback((wasCorrect) => {
+            if (feedbackCondition === 'none') return;
+            
+            setScore(prevScore => {
+              let newScore = prevScore;
+              
+              if (wasCorrect) {
+                if (feedbackCondition === 'positive' || feedbackCondition === 'both') {
+                  newScore = Math.min(100, prevScore + 1.25); // Increase by 1.25 points (40 rounds * 1.25 = 50 points max)
+                }
+              } else {
+                if (feedbackCondition === 'negative' || feedbackCondition === 'both') {
+                  newScore = Math.max(0, prevScore - 1.25); // Decrease by 1.25 points
+                }
+              }
+              
+              return newScore;
+            });
+          }, [feedbackCondition]);
+
+          const handleKeyPress = useCallback((event) => {
+            if (gameState !== 'moving') return;
+            
+            const key = event.key;
+            if (key !== 'ArrowLeft' && key !== 'ArrowRight') return;
+            
+            const pressedHand = key === 'ArrowLeft' ? 'left' : 'right';
+            
+            // Set player hand animation
+            setPlayerHandMoving(pressedHand);
+            
+            // Determine if response was correct
+            let wasCorrect = false;
+            
+            if (isFullMove) {
+              // Should respond and hit the correct hand
+              wasCorrect = pressedHand === movingHand;
+            } else {
+              // Should NOT respond to slight movements
+              wasCorrect = false;
+            }
+            
+            setRoundResult(wasCorrect ? 'correct' : 'incorrect');
+            updateScore(wasCorrect);
+            setRound(prev => prev + 1);
+            setGameState('success');
+          }, [gameState, movingHand, isFullMove, updateScore]);
+
+          useEffect(() => {
+            window.addEventListener('keydown', handleKeyPress);
+            return () => window.removeEventListener('keydown', handleKeyPress);
+          }, [handleKeyPress]);
+
+          useEffect(() => {
+            // Reset player hand animation after a short delay
+            if (playerHandMoving) {
+              const timeout = setTimeout(() => {
+                setPlayerHandMoving(null);
+              }, 300);
+              return () => clearTimeout(timeout);
+            }
+          }, [playerHandMoving]);
+
+          useEffect(() => {
+            // Reset opponent hand position after animation, but only for lure moves
+            if (!isFullMove && (opponentHandPosition.left > 0 || opponentHandPosition.right > 0)) {
+              // For lure moves, position resets automatically in startNewRound
+              return;
+            }
+            // For full moves, reset when round ends
+            if (gameState === 'success' && (opponentHandPosition.left > 0 || opponentHandPosition.right > 0)) {
+              const timeout = setTimeout(() => {
+                setOpponentHandPosition({ left: 0, right: 0 });
+              }, 300);
+              return () => clearTimeout(timeout);
+            }
+          }, [opponentHandPosition, isFullMove, gameState]);
+
+          useEffect(() => {
+            if (gameState === 'success') {
+              const timeout = setTimeout(() => {
+                startNewRound();
+              }, feedbackCondition === 'none' ? 500 : 1500);
+              return () => clearTimeout(timeout);
+            }
+          }, [gameState, startNewRound, feedbackCondition]);
+
+          const resetGame = () => {
+            setGameState('waiting');
+            setRound(0);
+            setScore(50); // Reset to half-full
+            setMovingHand(null);
+            setPlayerHandMoving(null);
+            setRoundResult(null);
+            setOpponentHandPosition({ left: 0, right: 0 });
+            setShowSlapPrompt(false);
+          };
+
+          const startGame = () => {
+            setRound(0);
+            setScore(50);
+            startNewRound();
+          };
+
+          const getFeedbackMessage = () => {
+            if (roundResult === 'correct') {
+              if (feedbackCondition === 'positive' || feedbackCondition === 'both') {
+                return React.createElement('div', { className: 'text-3xl text-green-400' }, 'CORRECT!');
+              }
+            } else if (roundResult === 'incorrect') {
+              if (feedbackCondition === 'negative' || feedbackCondition === 'both') {
+                return React.createElement('div', { className: 'text-3xl text-red-400' }, 'WRONG!');
+              }
+            }
+            return null;
+          };
+
+          return React.createElement('div', { className: 'flex flex-col items-center justify-center min-h-screen bg-gradient-to-br from-green-800 to-green-600 text-white p-4' },
+            React.createElement('div', { className: 'bg-black bg-opacity-20 rounded-lg p-8 max-w-4xl w-full' },
+              React.createElement('h1', { className: 'text-4xl font-bold text-center mb-6' }, 'Stop-Signal Reaction Game'),
+              
+              // Game Stats
+              React.createElement('div', { className: 'flex justify-between items-center mb-6 text-xl' },
+                React.createElement('div', null, `Round: ${round}/40`),
+                React.createElement('div', { className: 'flex-1 mx-8' },
+                  React.createElement('div', { className: 'text-center mb-2' }, 'Score'),
+                  React.createElement('div', { className: 'w-full bg-gray-700 rounded-full h-6 border-2 border-gray-600' },
+                    React.createElement('div', { 
+                      className: 'bg-gradient-to-r from-red-500 via-yellow-500 to-green-500 h-full rounded-full transition-all duration-500',
+                      style: { width: `${score}%` }
+                    })
+                  ),
+                  React.createElement('div', { className: 'text-center text-sm mt-1' }, `${score}%`)
+                )
+              ),
+
+              // Game Area
+              React.createElement('div', { className: 'relative bg-amber-900 rounded-lg p-8 mb-6', style: { minHeight: '400px' } },
+                // Table with middle line
+                React.createElement('div', { className: 'absolute inset-4 bg-amber-800 rounded border-4 border-amber-700' },
+                  // Middle line
+                  React.createElement('div', { className: 'absolute top-1/2 left-4 right-4 h-0.5 bg-red-400 opacity-50' }),
+                  
+                  // Opponent's hands
+                  React.createElement('div', { className: 'absolute top-4 left-1/2 transform -translate-x-1/2 flex space-x-8' },
+                    React.createElement('div', { 
+                      className: `w-16 h-20 bg-pink-300 rounded-full border-4 border-pink-400 transition-transform duration-200 ${
+                        movingHand === 'left' ? `transform translate-y-${Math.floor(opponentHandPosition.left / 5)}` : ''
+                      }`
+                    },
+                      React.createElement('div', { className: 'w-full h-full bg-pink-200 rounded-full flex items-center justify-center' },
+                        React.createElement('span', { className: 'text-xs text-gray-700' }, 'L')
+                      )
+                    ),
+                    React.createElement('div', { 
+                      className: `w-16 h-20 bg-pink-300 rounded-full border-4 border-pink-400 transition-transform duration-200 ${
+                        movingHand === 'right' ? `transform translate-y-${Math.floor(opponentHandPosition.right / 5)}` : ''
+                      }`
+                    },
+                      React.createElement('div', { className: 'w-full h-full bg-pink-200 rounded-full flex items-center justify-center' },
+                        React.createElement('span', { className: 'text-xs text-gray-700' }, 'R')
+                      )
+                    )
+                  ),
+
+                  // Player's hands
+                  React.createElement('div', { className: 'absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-8' },
+                    React.createElement('div', { 
+                      className: `w-16 h-20 bg-blue-300 rounded-full border-4 border-blue-400 transition-transform duration-200 ${
+                        playerHandMoving === 'left' ? 'transform -translate-y-24 scale-110' : ''
+                      }`
+                    },
+                      React.createElement('div', { className: 'w-full h-full bg-blue-200 rounded-full flex items-center justify-center' },
+                        React.createElement('span', { className: 'text-xs text-gray-700' }, '←')
+                      )
+                    ),
+                    React.createElement('div', { 
+                      className: `w-16 h-20 bg-blue-300 rounded-full border-4 border-blue-400 transition-transform duration-200 ${
+                        playerHandMoving === 'right' ? 'transform -translate-y-24 scale-110' : ''
+                      }`
+                    },
+                      React.createElement('div', { className: 'w-full h-full bg-blue-200 rounded-full flex items-center justify-center' },
+                        React.createElement('span', { className: 'text-xs text-gray-700' }, '→')
+                      )
+                    )
+                  ),
+
+                  // Game state messages
+                  React.createElement('div', { className: 'absolute inset-0 flex items-center justify-center' },
+                    gameState === 'waiting' && React.createElement('div', { className: 'text-center' },
+                      React.createElement('div', { className: 'text-2xl mb-4' }, 'Ready for 40 rounds?'),
+                      React.createElement('div', { className: 'text-sm mb-4 opacity-80' },
+                        'Only slap when the hand crosses the middle line!',
+                        React.createElement('br'),
+                        'Ignore slight movements that don\'t cross the line.'
+                      ),
+                      React.createElement('button', {
+                        onClick: startGame,
+                        className: 'bg-green-500 hover:bg-green-600 px-6 py-3 rounded-lg text-xl font-bold transition-colors'
+                      }, 'Start Game')
+                    ),
+                    
+                    gameState === 'moving' && showSlapPrompt && isFullMove && React.createElement('div', { className: 'text-xl text-yellow-400' }, 'SLAP NOW!'),
+                    
+                    gameState === 'success' && getFeedbackMessage(),
+                    
+                    gameState === 'gameOver' && React.createElement('div', { className: 'text-center' },
+                      React.createElement('div', { className: 'text-3xl text-blue-400 mb-4' }, 'Game Complete!'),
+                      React.createElement('div', { className: 'text-xl mb-4' }, `Final Score: ${score}%`),
+                      React.createElement('div', { className: 'text-lg mb-4' },
+                        score >= 70 ? 'Excellent!' : score >= 50 ? 'Good job!' : 'Keep practicing!'
+                      ),
+                      React.createElement('button', {
+                        onClick: resetGame,
+                        className: 'bg-blue-500 hover:bg-blue-600 px-6 py-3 rounded-lg text-xl font-bold transition-colors'
+                      }, 'Play Again')
+                    )
+                  )
+                )
+              ),
+
+              // Instructions
+              React.createElement('div', { className: 'text-center text-lg mb-6' },
+                React.createElement('div', { className: 'mb-2' }, 'Use ← and → arrow keys to slap the opponent\'s hands!'),
+                React.createElement('div', { className: 'text-sm opacity-80' },
+                  React.createElement('strong', null, 'Key Rule:'), ' Only slap when the hand crosses the red middle line.',
+                  React.createElement('br'),
+                  'Ignore small movements that don\'t cross the line.'
+                )
+              ),
+
+              // Feedback Condition Selector
+              React.createElement('div', { className: 'text-center' },
+                React.createElement('label', { className: 'block text-lg mb-2' }, 'Feedback Condition:'),
+                React.createElement('select', {
+                  value: feedbackCondition,
+                  onChange: (e) => setFeedbackCondition(e.target.value),
+                  className: 'bg-gray-800 text-white px-4 py-2 rounded border border-gray-600',
+                  disabled: gameState !== 'waiting' && gameState !== 'gameOver'
+                },
+                  React.createElement('option', { value: 'none' }, 'No Feedback'),
+                  React.createElement('option', { value: 'positive' }, 'Only Positive Feedback'),
+                  React.createElement('option', { value: 'negative' }, 'Only Negative Feedback'),
+                  React.createElement('option', { value: 'both' }, 'Both Feedbacks')
+                )
+              )
+            )
+          );
+        };
+
+        // Render the game
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(React.createElement(HandSlapGame));
+    </script>
+</body>
+</html>
