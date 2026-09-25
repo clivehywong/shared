@@ -1,0 +1,19 @@
+seed,seed_title,cluster,size,peak_t,peak_x,peak_y,peak_z,peak_label,composition
+LH-RN,Left Red Nucleus,1,8,4.933790683746338,42,8,46,Precentral_R,Precentral_R 75.0%; Frontal_Mid_2_R 25.0%
+LH-RN,Left Red Nucleus,2,4,4.598531246185303,32,12,40,NA,Frontal_Mid_2_R 25.0%
+LH-RN,Left Red Nucleus,3,1334,4.761293411254883,-2,20,70,Supp_Motor_Area_L,Frontal_Sup_Medial_L 34.9%; Supp_Motor_Area_L 21.5%; Frontal_Sup_Medial_R 10.9%; Frontal_Sup_2_R 5.5%; Supp_Motor_Area_R 4.9%; Frontal_Sup_2_L 0.8%; Paracentral_Lobule_L 0.3%; Cingulate_Mid_R 0.1%
+LH-RN,Left Red Nucleus,4,492,5.603268623352051,-34,-8,68,Precentral_L,Precentral_L 46.3%; Frontal_Sup_2_L 20.7%; Frontal_Mid_2_L 6.1%; Paracentral_Lobule_L 1.0%
+LH-RN,Left Red Nucleus,5,294,5.17132568359375,-34,54,-4,Frontal_Mid_2_L,Frontal_Mid_2_L 56.5%; Frontal_Sup_2_L 39.5%
+RH-RN,Right Red Nucleus,1,14,4.043855667114258,44,-30,42,Postcentral_R,Postcentral_R 64.3%; SupraMarginal_R 35.7%
+RH-RN,Right Red Nucleus,2,113,5.684728145599365,34,-4,66,Frontal_Sup_2_R,Frontal_Sup_2_R 92.0%; Frontal_Mid_2_R 0.9%
+RH-RN,Right Red Nucleus,3,176,4.4176344871521,16,-40,58,NA,Postcentral_R 47.2%; Parietal_Sup_R 15.9%; Paracentral_Lobule_R 11.4%; Precuneus_R 8.5%
+RH-RN,Right Red Nucleus,4,1180,5.391311168670654,-10,-30,52,Paracentral_Lobule_L,Paracentral_Lobule_L 23.7%; Postcentral_L 21.4%; Supp_Motor_Area_L 10.0%; Supp_Motor_Area_R 6.4%; Precentral_L 5.7%; Cingulate_Mid_L 5.5%; Paracentral_Lobule_R 4.5%; Parietal_Sup_L 3.5%; Precuneus_L 3.2%; Cingulate_Mid_R 3.0%; Parietal_Inf_L 0.8%
+RH-RN,Right Red Nucleus,5,7,3.4628257751464844,2,-50,58,Precuneus_R,Precuneus_R 71.4%; Precuneus_L 28.6%
+RH-RN,Right Red Nucleus,6,80,3.9414570331573486,-8,-54,76,Precuneus_L,Precuneus_L 83.8%; Parietal_Sup_L 3.8%
+RH-RN,Right Red Nucleus,7,1,3.4570212364196777,-16,-80,64,NA,
+RH-RN,Right Red Nucleus,8,1,3.46734356880188,-18,-80,62,NA,
+RH-RN,Right Red Nucleus,9,35,3.676442861557007,-22,-76,54,Parietal_Sup_L,Parietal_Sup_L 77.1%
+RH-RN,Right Red Nucleus,10,44,5.089783668518066,-26,-8,76,Frontal_Sup_2_L,Frontal_Sup_2_L 61.4%; Precentral_L 18.2%
+RH-RN,Right Red Nucleus,11,27,4.111886024475098,-34,-20,60,Precentral_L,Precentral_L 100.0%
+HIP-head-L,Left Hippocampal Head,1,10,5.119115829467773,66,6,-22,Temporal_Pole_Mid_R,Temporal_Mid_R 50.0%; Temporal_Pole_Mid_R 20.0%
+HIP-head-L,Left Hippocampal Head,2,71,5.521477222442627,58,6,-36,Temporal_Inf_R,Temporal_Pole_Mid_R 53.5%; Temporal_Inf_R 15.5%; Temporal_Mid_R 4.2%
