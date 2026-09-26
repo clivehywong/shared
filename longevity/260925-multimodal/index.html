@@ -95,12 +95,20 @@ not cortical thickness. Top DKT trends shown for completeness.</p>
 
 <h2 id="st-interp">Interpretation</h2>
 <div class="box"><b>No structural effect survives correction.</b> After excluding the duplicated/mixed-up
-sessions, none of the 7 subcortical structures, DKT regions, or cortical-thickness maps shows a group&times;time
+sessions, none of the 10 subcortical structures, DKT regions, or cortical-thickness maps shows a group&times;time
 interaction (top trend Right-Thalamus q=0.15). Two readings: (i) a short walking intervention is unlikely to
 change gross subcortical volume — structural change on this timescale is biologically implausible — so the
 null is the expected result; (ii) the study is only powered for large effects (n=53, 105 sessions). The
 functional/effective-connectivity effects reported in the FC/EC tabs therefore carry the intervention signal,
 not macro-structure. The earlier "volume preservation" claim should not be cited.</div>
+
+<h2 id="st-outliers">Outlier screen</h2>
+<p>Two control subjects show large negative deltas: <b>sub-063</b> (73F; L/R hippocampus −284/−257 mm³,
+z≈−3.6 both; its ICV also changed +7.2% between sessions, suggesting segmentation instability) and
+<b>sub-077</b> (70F; left amygdala −232 mm³, z=−3.2). A third case, sub-067 (Walking), has mild bilateral
+MTL atrophy consistent with age. Refitting the LMM without sub-063+077 (n=51) or without all six flagged
+subjects (n=47) keeps <b>0 FDR-significant structures</b> (top q=0.21 / 0.28), so the structural null does
+not depend on these subjects.</p>
 </section>
 <section class="tabpane" id="tab-fc" data-title="FC">
 <h1>Functional connectivity</h1>
@@ -319,8 +327,9 @@ All are HRF-latency confounded at TR=0.8 s → hypothesis-generating.</p>
 <p>For every FDR-significant feature in every family (FC metrics, EC edges), per-subject post−pre deltas were
 z-scored within group and |z|&gt;3 flagged; the LMM was refit without flagged subjects
 (<code>script/outlier_check.py</code>; outputs <code>shared/outlier_flags.csv</code>,
-<code>shared/outlier_robustness.csv</code>). Structural outliers were screened separately (sub-099 large ICV,
-sub-067 age-consistent MTL atrophy, sub-093 borderline putamen — all retained).</p>
+<code>shared/outlier_robustness.csv</code>). Structural outliers were screened separately (sub-063 hippocampal
+loss + ICV instability, sub-077 amygdala loss, sub-067 age-consistent MTL atrophy, sub-099 large ICV,
+sub-093 borderline putamen — all retained; see the Structural tab outlier screen for the robustness refits).</p>
 
 <h2 id="m-vw">Voxelwise / seed-to-voxel</h2>
 <p>ALFF/ReHo (voxelwise), seed-to-voxel Pearson→Fisher-z. Per-subject delta (post−pre) maps; two-sample t-test via FSL
