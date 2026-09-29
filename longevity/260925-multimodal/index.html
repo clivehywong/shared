@@ -351,6 +351,26 @@ combined Schaefer+Tian+Buckner atlas (feasible follow-up, ~2 days of HPC re-run)
 <table><thead><tr><th>map</th><th>scope</th><th>pairs</th><th>n_sig</th><th>top_edge</th><th>t</th><th>q</th></tr></thead><tbody><tr><td>Buckner-7</td><td>cerebellum-internal only</td><td>21</td><td>2</td><td>Cb-Default->Cb-Vis</td><td>3.39</td><td>0.00132</td></tr><tr><td>King-10</td><td>full connectome</td><td>153</td><td>2</td><td>Cb-8->DorsAttn</td><td>2.79</td><td>0.0136</td></tr><tr><td>1-node</td><td>full connectome</td><td>36</td><td>0</td><td>SalVentAttn->Subcortical</td><td>-2.02</td><td>0.0927</td></tr><tr><td>zones</td><td>cerebellum-internal only</td><td>3</td><td>0</td><td>Cb-Motor->Cb-Vestibular</td><td>-1.06</td><td>0.34</td></tr></tbody></table>
 <h2 id="sc-edges">Significant SC edges</h2>
 <table><thead><tr><th>map</th><th>edge</th><th>t</th><th>pval</th><th>q</th><th>n</th></tr></thead><tbody><tr><td>Buckner-7</td><td>Cb-Default->Cb-Vis</td><td>3.39</td><td>0.000693</td><td>0.00132</td><td>97</td></tr><tr><td>King-10</td><td>Cb-8->DorsAttn</td><td>2.79</td><td>0.00532</td><td>0.0136</td><td>97</td></tr><tr><td>King-10</td><td>Cb-7->DorsAttn</td><td>2.5</td><td>0.0124</td><td>0.0197</td><td>97</td></tr><tr><td>Buckner-7</td><td>Cb-Default->Cb-DorsAttn</td><td>-2.31</td><td>0.0207</td><td>0.031</td><td>97</td></tr></tbody></table>
+<h2 id="dti">Diffusion microstructure (DTI/DKI, ROI-wise)</h2>
+<p>Twelve dipy_dki scalar maps (FA, MD, AD, RD, MK, AK, RK, KFA, mkt, linearity, planarity,
+sphericity) sampled as voxel-wise means over the same atlas representations
+(1-node / King-10 / Buckner-7 / zones; maps and QSIRecon ACPC dsegs are in the same
+subject space). LMM value ~ group&times;time + Age + Gender + (1|subject), BH-FDR within
+param&times;map (348 tests, 5 significant).</p>
+<table><thead><tr><th>param</th><th>division</th><th>edge</th><th>t</th><th>pval</th><th>q</th><th>n</th></tr></thead><tbody><tr><td>ak</td><td>cbsplit</td><td>Cb-SomMot->Cb-SomMot</td><td>2.66</td><td>0.00775</td><td>0.00904</td><td>97</td></tr><tr><td>md</td><td>9</td><td>SalVentAttn->SalVentAttn</td><td>-2.75</td><td>0.00599</td><td>0.0269</td><td>97</td></tr><tr><td>planarity</td><td>mdtb10</td><td>Cerebellar_Region10->Cerebellar_Region10</td><td>2.47</td><td>0.0136</td><td>0.0272</td><td>97</td></tr><tr><td>ak</td><td>mdtb10</td><td>Cerebellar_Region7->Cerebellar_Region7</td><td>2.34</td><td>0.0191</td><td>0.0318</td><td>97</td></tr><tr><td>linearity</td><td>cbsplit</td><td>Cb-SomMot->Cb-SomMot</td><td>1.97</td><td>0.0487</td><td>0.0487</td><td>97</td></tr></tbody></table>
+<div class="box"><b>Microstructure effects:</b> walkers show <b>higher axial kurtosis in the
+cerebellar sensorimotor network</b> (Buckner-7: Cb-SomMot q=0.009; MDTB regional Ak in
+Region7 q=0.032) and <b>lower MD in the salience/ventral-attention network</b>
+(q=0.027), with planarity/linearity changes in cerebellar regions. FA itself only
+trends (Cb-SomMot q=0.054). The pattern — kurtosis up (more restricted/hindered
+diffusion) in cerebellar sensorimotor tissue and MD down in a cortical attention
+network — is consistent with the microstructural direction expected after aerobic
+training, but the effects are few (5/348) and DWI at 1.7 mm is modestly sensitive;
+hypothesis-generating. Note: MDTB-32/DiFuMo-512 are not in the DTI table (their
+atlases were not part of the QSIRecon run); adding them needs a per-subject atlas
+warp (feasible follow-up), and voxelwise TBSS is available as a whole-brain
+sensitivity analysis.</div>
+
 <h2 id="sc-interp">Interpretation</h2>
 <div class="box"><b>White-matter connectivity shows a small, focused set of effects</b>: cerebellum&ndash;visual
 and cerebellum&ndash;default-mode coupling (Buckner-7: Cb-Default&ndash;Cb-Vis q=0.001, Cb-Default&ndash;Cb-DorsAttn
