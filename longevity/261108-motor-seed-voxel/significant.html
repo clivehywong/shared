@@ -1,0 +1,39 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Significant results · Motor seed-to-voxel</title><style>
+:root{--bg:#f5f6fa;--ink:#1a1d29;--acc:#2c5f8a;--line:#d8dce6;--ok:#237a4b;--warn:#9a6700;--bad:#a43b3b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.55 -apple-system,'Segoe UI',Roboto,Arial,sans-serif}
+.banner{position:fixed;inset:0 0 auto;height:56px;background:#14182b;color:#fff;display:flex;z-index:100;box-shadow:0 2px 8px #0003}
+.banner .title{display:flex;align-items:center;padding:0 18px;font-weight:700;border-right:1px solid #ffffff28;white-space:nowrap}
+.tabs{display:flex;overflow-x:auto}.tabbtn{border:0;border-bottom:3px solid transparent;background:none;color:#cbd0e0;padding:0 18px;cursor:pointer;white-space:nowrap}
+.tabbtn.active{color:#fff;border-bottom-color:#5aa2e0;font-weight:600}.shell{margin-top:56px}.menu{position:fixed;top:56px;bottom:0;left:0;width:230px;overflow:auto;background:#fff;border-right:1px solid var(--line);padding:12px 0;z-index:40}
+.menu h4{padding:0 16px;color:#889;text-transform:uppercase;font-size:11px}.menu a{display:block;padding:7px 16px;color:var(--ink);text-decoration:none;border-left:3px solid transparent}.menu a.active{background:#eaf1f8;border-left-color:var(--acc)}
+.content{margin-left:230px;padding:26px 34px;max-width:1600px}.tabpane{display:none}.tabpane.active{display:block}h1{font-size:26px;margin:0 0 8px}h2{font-size:19px;margin:28px 0 8px;border-bottom:1px solid var(--line);padding-bottom:5px}h3{font-size:15px;margin:18px 0 6px}p{max-width:88ch}.small{font-size:12.5px;color:#666}.muted{color:#889}
+.box{background:#fff;border-left:4px solid var(--acc);padding:11px 15px;margin:12px 0;border-radius:0 4px 4px 0}.box.warn{border-left-color:var(--warn);background:#fdf8ec}.box.pending{border-left-color:var(--bad);background:#fff4f4}.box.ok{border-left-color:var(--ok);background:#f3faf6}
+.kpi{display:inline-block;min-width:150px;background:#fff;border:1px solid var(--line);border-radius:6px;padding:9px 15px;margin:4px 6px 4px 0}.kpi b{display:block;font-size:23px}.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}details{background:#fff;border:1px solid var(--line);padding:8px 12px;margin:8px 0}summary{cursor:pointer;font-weight:600}
+table{border-collapse:collapse;width:100%;font-size:12.5px;background:#fff;margin:8px 0 16px}th,td{border:1px solid var(--line);padding:5px 8px;text-align:left;vertical-align:top}th{background:#eef1f6;position:sticky;top:0;z-index:1}.table-scroll{max-height:620px;overflow:auto;border:1px solid var(--line)}
+figure{margin:10px 0 20px}figure img{display:block;max-width:100%;height:auto;border:1px solid var(--line);background:#111}figcaption{font-size:12px;color:#666;margin-top:4px;overflow-wrap:anywhere}code{overflow-wrap:anywhere}.filters{display:flex;gap:10px;flex-wrap:wrap;background:#fff;border:1px solid var(--line);padding:10px;margin:10px 0}.filters input,.filters select{padding:7px;border:1px solid #bbc3d0;border-radius:3px}.filters input{min-width:280px}.roi-table tr[hidden]{display:none}
+@media(max-width:950px){.menu{display:none}.content{margin-left:0;padding:20px}.grid2{grid-template-columns:1fr}.banner .title{display:none}}
+</style></head><body><main style="margin-left:0;max-width:1600px;padding:26px 34px"><a href="index.html">← Back to motor seed-to-voxel report</a><h1>Significant results · current analysis</h1>
+<div class="box warn"><b>Current 45-subject analysis, not a previous-analysis result.</b> Subject deltas are ses-02 − ses-01. Each map uses an independent two-sample Walking-versus-Control randomise test with both contrasts and 5,000 permutations. TFCE controls error within each seed/contrast map only, not across 612 seeds, atlases, directions or contrasts. Findings are exploratory at the full-family level.</div>
+<p><b>2 significant seed maps</b> are shown. No other completed seeds are included on this page. Control &gt; Walking has no significant clusters.</p>
+
+<section><h2>4s456__422 · RH-RN</h2>
+<p class="muted">4s456 · label 422 · subcortex · Walking > Control</p>
+<div class="kpi"><b>76</b>significant voxels</div>
+<div class="kpi"><b>2</b>clusters</div>
+<div class="kpi"><b>0.0268</b>minimum TFCE p</div>
+<div class="kpi"><b>5000</b>permutations</div>
+<h3>Seed anatomy</h3><figure><img src="assets/shared/seeds/4s456__422/anatomy.png" alt="Seed anatomy for 4s456__422"><figcaption>Current-analysis seed definition for 4s456__422</figcaption></figure>
+<h3>Significant cluster map · Walking > Control</h3><figure><img src="assets/fc/4s456__422/Walking_minus_Control.png" alt="TFCE-significant map for 4s456__422"><figcaption>Mask: TFCE corrected-p ≥ 0.95 · ses-02 − ses-01 · independent two-group test · 5,000 permutations</figcaption></figure>
+<h3>Cluster table</h3><table><thead><tr><th>Cluster Index</th><th>Voxels</th><th>Peak T</th><th>Peak CorrP</th><th>p_tfce</th><th>Peak X (mm)</th><th>Peak Y (mm)</th><th>Peak Z (mm)</th><th>aal3_peak_label</th><th>aal3_composition</th><th>harvard_oxford_cortical_composition</th><th>harvard_oxford_subcortical_composition</th><th>cerebellum_composition</th></tr></thead><tbody><tr><td>1</td><td>29</td><td>4.4273</td><td>0.9556</td><td>0.0444</td><td>0</td><td>-24</td><td>72</td><td>No label</td><td>Paracentral_Lobule_L: 51.7%; Supp_Motor_Area_R: 20.7%; Paracentral_Lobule_R: 3.4%</td><td>Precentral Gyrus: 94.8%</td><td>Left Cerebral Cortex: 53.4%; Right Cerebral Cortex: 40.5%</td><td></td></tr><tr><td>2</td><td>47</td><td>5.971</td><td>0.9732</td><td>0.0268</td><td>28</td><td>-8</td><td>64</td><td>Frontal_Sup_2_R</td><td>Frontal_Sup_2_R: 100.0%</td><td>Precentral Gyrus: 67.3%; Superior Frontal Gyrus: 23.4%; Middle Frontal Gyrus: 0.8%</td><td>Right Cerebral Cortex: 100.0%</td><td></td></tr></tbody></table>
+</section>
+<section><h2>longevity442__017 · aHIP-lh</h2>
+<p class="muted">longevity442 · label 17 · subcortex · Walking > Control</p>
+<div class="kpi"><b>45</b>significant voxels</div>
+<div class="kpi"><b>1</b>clusters</div>
+<div class="kpi"><b>0.038</b>minimum TFCE p</div>
+<div class="kpi"><b>5000</b>permutations</div>
+<h3>Seed anatomy</h3><figure><img src="assets/shared/seeds/longevity442__017/anatomy.png" alt="Seed anatomy for longevity442__017"><figcaption>Current-analysis seed definition for longevity442__017</figcaption></figure>
+<h3>Significant cluster map · Walking > Control</h3><figure><img src="assets/fc/longevity442__017/Walking_minus_Control.png" alt="TFCE-significant map for longevity442__017"><figcaption>Mask: TFCE corrected-p ≥ 0.95 · ses-02 − ses-01 · independent two-group test · 5,000 permutations</figcaption></figure>
+<h3>Cluster table</h3><table><thead><tr><th>Cluster Index</th><th>Voxels</th><th>Peak T</th><th>Peak CorrP</th><th>p_tfce</th><th>Peak X (mm)</th><th>Peak Y (mm)</th><th>Peak Z (mm)</th><th>aal3_peak_label</th><th>aal3_composition</th><th>harvard_oxford_cortical_composition</th><th>harvard_oxford_subcortical_composition</th><th>cerebellum_composition</th></tr></thead><tbody><tr><td>1</td><td>45</td><td>5.6211</td><td>0.962</td><td>0.038</td><td>-48</td><td>-10</td><td>-30</td><td>Temporal_Inf_L</td><td>Temporal_Inf_L: 100.0%</td><td>Inferior Temporal Gyrus, anterior division: 62.5%; Inferior Temporal Gyrus, posterior division: 18.6%; Temporal Pole: 2.2%</td><td>Left Cerebral Cortex: 82.8%; Left Cerebral White Matter: 17.2%</td><td></td></tr></tbody></table>
+</section>
+</main></body></html>
